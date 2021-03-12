@@ -11,7 +11,7 @@
 ---
 
 ## Planning:
-* Get the data.
 * Bulid HTML file.
-* build CSS file.
+* Build CSS file.
+* Get the data.
 * 

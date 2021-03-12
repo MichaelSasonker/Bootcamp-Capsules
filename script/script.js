@@ -5,26 +5,6 @@ const tableCont = mainCont.querySelector('.table-cont');
 
 const BOOTCAMP_API = 'https://appleseed-wa.herokuapp.com/api/users/';
 
-
-/*
-API
-[
-  {
-    "id": 0,
-    "firstName": "Guy",
-    "lastName": "Shefer",
-    "capsule": 1
-  },
------------------------------------
-USER
-  {
-  "id": 0,
-  "age": 28,
-  "city": "Rosh Haayin",
-  "gender": "m",
-  "hobby": "Frisbee"
-}
-*/
 class Student {
     constructor(id, firstName, lastName, capsule, age, city, gender, hobby) {
         this.id = id;
@@ -78,50 +58,93 @@ class StudentsList {
     }
 }
 
+
+/*---------------------------------------------------------------------------*/
+// This function take the url and return the data from the url's API
 async function GetData(url) {
     const respone = await fetch(url);
     const data = await respone.json();
     return (data);
 }
 
-async function MainFunction() {
-
-    const mainData = await GetData(BOOTCAMP_API);
-
+/*---------------------------------------------------------------------------*/
+// Push to another array the other details of the student
+async function GetDetailsData(data) {
     let detailsArr = [];
+
+    for (let i = 0; i < data.length; ++i) {
+        detailsArr.push(await GetData(BOOTCAMP_API + `/${i}`));
+    }
+    
+    return (detailsArr);
+}
+
+/*---------------------------------------------------------------------------*/
+// Add to the mainData object the keys and values from detailsArr
+function AddDataToObject(mainDataObj, detailsArr) {
+    for (let i = 0; i < mainDataObj.length; ++i) {
+        if (mainDataObj[i].id === detailsArr[i].id) {
+            mainDataObj[i].age = detailsArr[i].age;
+            mainDataObj[i].city = detailsArr[i].city;
+            mainDataObj[i].gender = detailsArr[i].gender;
+            mainDataObj[i].hobby = detailsArr[i].hobby;
+        }
+    }
+
+    return (mainDataObj);
+}
+
+/*---------------------------------------------------------------------------*/
+function DisplayData(dataList) {
+
+    for (let i = 0; i < dataList.students.length; ++i) {
+        tableCont.innerHTML += `
+            <tr>
+                <td> ${dataList.students[i].id} </td>
+                <td> ${dataList.students[i].firstName} </td>
+                <td> ${dataList.students[i].lastName} </td>
+                <td> ${dataList.students[i].capsule} </td>
+                <td> ${dataList.students[i].age} </td>
+                <td> ${dataList.students[i].city} </td>
+                <td> ${dataList.students[i].gender} </td>
+                <td> ${dataList.students[i].hobby} </td>
+                <td> 
+                    <button type="submit" class="btn edit-btn" data-attr="edit-btn">
+                        Edit
+                    </button>
+                </td>
+                <td> 
+                <button type="submit" class="btn remove-btn" data-attr="remove-btn">
+                    Remove
+                </button>
+            </td>
+        `; 
+    }
+}
+
+/*---------------------------------------------------------------------------*/
+async function MainFunction() {
 
     let list = new StudentsList();
 
-    // Push to another array the other details of the student
-    for (let i = 0; i < mainData.length; ++i) {
-        detailsArr.push(await GetData(BOOTCAMP_API + `/${i}`));
-    }
-    // console.log(detailsArr);
+    const mainData = await GetData(BOOTCAMP_API);
+    let detailsResArr = await GetDetailsData(mainData);
 
-    // Add to the mainData object the keys and values from detailsArr
-    for (let i = 0; i < mainData.length; ++i) {
-        if (mainData[i].id === detailsArr[i].id) {
-            mainData[i].age = detailsArr[i].age;
-            mainData[i].city = detailsArr[i].city;
-            mainData[i].gender = detailsArr[i].gender;
-            mainData[i].hobby = detailsArr[i].hobby;
-        }
-    }
-    // console.log(mainData);
-
+    AddDataToObject(mainData, detailsResArr);
 
     // Create students with all the data
     for (let i = 0; i < mainData.length; ++i) {
         list.AddNewStudent(mainData[i]);
     }
-    // console.log(list);
+    console.log(list);
     list.Print();
 
     // TODO: check how to read from storage!!!
     // localStorage.setItem("studentList", JSON.stringify(list));
 
+    DisplayData(list);
 
-    
+
 
     
 
