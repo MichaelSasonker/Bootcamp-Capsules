@@ -1,3 +1,4 @@
+
 * {
     padding: 0;
     margin: 0;
@@ -30,6 +31,31 @@ h1 {
     padding: 10px;
 }
 
+select {
+    padding: 10px;
+    margin: 5px;
+    border: 1px solid #000;
+    font-size: 18px;
+    background: #fff;
+    color: #000;
+}
+
+select option {
+    padding: 5px;
+    margin: 5px;
+    font-size: 18px;
+    background: #fff;
+    color: #000;
+}
+
+.search {
+    padding: 6px;
+    border: 1px solid #000;
+    margin-right: 10px;
+    font-size: 18px;
+}
+
+
 .table-cont {
     height: 80%;
     width: 90%;
@@ -48,13 +74,15 @@ td {
     text-align: center;
 }
 
-tr:nth-child(even) {
+/* TODO: CHECK!!! */
+/* tbody tr:nth-child(2n) {
+    border: 1px solid #000;
     background-color: #eee;
 }
 
-tr:nth-child(odd) {
+tbody tr:nth-child(2n + 1) {
     background-color: #fff;
-}
+} */
 
 th {
     background-color: #000;
@@ -72,13 +100,33 @@ th {
 }
 
 .edit-btn {
-    background-color: chartreuse;
-    color: #000;
+    background: url('../img/edit-solid.svg') no-repeat center center/cover;
+    filter: invert(69%) sepia(48%) saturate(564%) hue-rotate(93deg) brightness(94%) contrast(92%);
+    height: 30px;
+    width: 30px;
+    text-align: center;
+    border: none;
 }
 
+.btn:hover {
+    filter: invert(0%) sepia(48%) saturate(564%) hue-rotate(93deg) brightness(94%) contrast(92%);
+
+}
+
+/* .edit-btn:active, 
+.btn:active
+.remove-btn:active {
+    border: none;
+    filter: invert(0%) sepia(48%) saturate(564%) hue-rotate(93deg) brightness(94%) contrast(92%);
+} */
+
 .remove-btn {
-    background-color: red;
-    color: #000;
+    background: url('../img/trash-solid.svg') no-repeat center center/cover;
+    filter: invert(26%) sepia(93%) saturate(4062%) hue-rotate(351deg) brightness(94%) contrast(110%);
+    height: 30px;
+    width: 30px;
+    text-align: center;
+    border: none;
 }
 
 .confirm-btn {

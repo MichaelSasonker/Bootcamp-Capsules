@@ -2,6 +2,8 @@
 const body = document.body;
 const mainCont = body.querySelector('.main-cont') ;
 const tableCont = mainCont.querySelector('.table-cont');
+const select = mainCont.querySelector('#dropdown');
+const options = document.createElement('option');
 
 const BOOTCAMP_API = 'https://appleseed-wa.herokuapp.com/api/users/';
 
@@ -109,17 +111,28 @@ function DisplayData(dataList) {
                 <td> ${dataList.students[i].gender} </td>
                 <td> ${dataList.students[i].hobby} </td>
                 <td> 
-                    <button type="submit" class="btn edit-btn" data-attr="edit-btn">
-                        Edit
-                    </button>
+                    <button type="submit" class="btn edit-btn" data-attr="edit-btn"></button>
                 </td>
                 <td> 
-                <button type="submit" class="btn remove-btn" data-attr="remove-btn">
-                    Remove
-                </button>
-            </td>
+                    <button type="submit" class="btn remove-btn" data-attr="remove-btn"></button>
+                </td>
+            </tr>
         `; 
     }
+}
+
+/*---------------------------------------------------------------------------*/
+function GetCategories(dataList) {
+    return (Object.keys(dataList.students[0]));
+}
+
+/*---------------------------------------------------------------------------*/
+function CreateOptions(categoryArr) {
+    categoryArr.forEach(category => {
+        select.innerHTML += `<option value="${category}">${category}</option>`;
+    });
+
+    return (select);
 }
 
 /*---------------------------------------------------------------------------*/
@@ -142,9 +155,13 @@ async function MainFunction() {
     // TODO: check how to read from storage!!!
     // localStorage.setItem("studentList", JSON.stringify(list));
 
+    // Display the table data
     DisplayData(list);
 
-
+    // Gets the table categories
+    const categoriesArr = GetCategories(list);
+    CreateOptions(categoriesArr);
+    // console.log(categoriesArr);
 
     
 
