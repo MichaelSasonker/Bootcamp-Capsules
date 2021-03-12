@@ -2,8 +2,8 @@
 const body = document.body;
 const mainCont = body.querySelector('.main-cont') ;
 const tableCont = mainCont.querySelector('.table-cont');
+const search = mainCont.querySelector('.search');
 const select = mainCont.querySelector('#dropdown');
-const options = document.createElement('option');
 
 const BOOTCAMP_API = 'https://appleseed-wa.herokuapp.com/api/users/';
 
@@ -45,6 +45,21 @@ class StudentsList {
         return (this.students);
     }
 
+    GetStudents(searchValue, keyName) {
+        if (typeof(searchValue) === 'string') {
+            let res = this.students.filter(obj => {
+                return (obj[keyName].includes(searchValue));
+            });
+            return res;
+        }
+        else {
+            let res = this.students.filter(obj => {
+                return (obj[keyName] === searchValue);
+            })
+            return res;
+        }
+    }
+
     RemoveStudent(studentId) {
         for (leti = 0; i < this.students.length; ++i) {
             if (this.students[i].id === studentId) {
@@ -60,6 +75,7 @@ class StudentsList {
     }
 }
 
+let list = new StudentsList();
 
 /*---------------------------------------------------------------------------*/
 // This function take the url and return the data from the url's API
@@ -119,6 +135,7 @@ function DisplayData(dataList) {
             </tr>
         `; 
     }
+    return (tableCont);
 }
 
 /*---------------------------------------------------------------------------*/
@@ -135,10 +152,59 @@ function CreateOptions(categoryArr) {
     return (select);
 }
 
+
+/*---------------------------------------------------------------------------*/
+function DisplaySearchedData(objArr) {
+    const tableContCopy = tableCont.innerHTML;
+    tableCont.innerHTML = '';
+    objArr.forEach(obj => {
+        tableCont.innerHTML += `
+            <tr>
+                <td> ${obj.id} </td>
+                <td> ${obj.firstName} </td>
+                <td> ${obj.lastName} </td>
+                <td> ${obj.capsule} </td>
+                <td> ${obj.age} </td>
+                <td> ${obj.city} </td>
+                <td> ${obj.gender} </td>
+                <td> ${obj.hobby} </td>
+                <td> 
+                    <button type="submit" class="btn edit-btn" data-attr="edit-btn"></button>
+                </td>
+                <td> 
+                    <button type="submit" class="btn remove-btn" data-attr="remove-btn"></button>
+                </td>
+            </tr>
+        `;
+    })
+}
+/*---------------------------------------------------------------------------*/
+function SearchFunction(e) {
+
+    let selectValue  = select.value;
+    let inputValue = e.target.value;
+    const tableContCopy = tableCont.innerHTML;
+
+    let checkType = parseInt(inputValue);
+
+    if (isNaN(checkType)) {
+        let result = list.GetStudents(inputValue, selectValue);
+        DisplaySearchedData(result);
+    }
+    else {
+        let result = list.GetStudents(parseInt(inputValue), selectValue);
+        DisplaySearchedData(result);
+    }
+
+}
+
+
+
+// let list = new StudentsList();
 /*---------------------------------------------------------------------------*/
 async function MainFunction() {
 
-    let list = new StudentsList();
+    // let list = new StudentsList();
 
     const mainData = await GetData(BOOTCAMP_API);
     let detailsResArr = await GetDetailsData(mainData);
@@ -149,7 +215,7 @@ async function MainFunction() {
     for (let i = 0; i < mainData.length; ++i) {
         list.AddNewStudent(mainData[i]);
     }
-    console.log(list);
+    // console.log(list);
     list.Print();
 
     // TODO: check how to read from storage!!!
@@ -163,6 +229,7 @@ async function MainFunction() {
     CreateOptions(categoriesArr);
     // console.log(categoriesArr);
 
-    
+    // Sent to hendler function when key is pressed
+    search.addEventListener('keyup', SearchFunction);
 
 }; MainFunction();

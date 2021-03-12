@@ -13,5 +13,12 @@
 ## Planning:
 * Bulid HTML file.
 * Build CSS file.
-* Get the data.
-* 
+* Get the main data.
+* Get detalis of any student.
+* Create a new Student class.
+* Create a new StudentsList class.
+* Sent the data object to the classes.
+* Display the data table on the DOM.
+* Add search input with categories dropdown. 
+* Add buttons to any table raw.
+* Try with localStorage.
