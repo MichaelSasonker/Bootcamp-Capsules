@@ -372,9 +372,6 @@ async function MainFunction() {
         list.AddNewStudent(mainData[i]);
     }
 
-    // TODO: check how to read from storage!!!
-    // localStorage.setItem("studentList", JSON.stringify(list));
-
     // Display the table data
     DisplayData(list);
 
