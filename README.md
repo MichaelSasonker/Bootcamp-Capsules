@@ -22,3 +22,8 @@
 * Add search input with categories dropdown. 
 * Add buttons to any table raw.
 * Try with localStorage.
+
+### Bugs:
+* No spinner!
+* No localStorage!
+* After search view is changed!
